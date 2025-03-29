@@ -3,19 +3,18 @@ using UnityEngine;
 public class TankShooting : MonoBehaviour
 {
     [Header("Bullet Settings")]
-    public GameObject bulletPrefab;          // กระสุนที่ยิงออกไป
-    public Transform firePoint;              // จุดที่กระสุนจะถูกสร้าง (ปากกระบอกปืน)
-    public float bulletForce = 20f;          // ความแรงของกระสุน
+    public GameObject bulletPrefab;
+    public Transform firePoint;
+    public float bulletForce = 20f;
 
     [Header("Fire Rate")]
-    public float fireCooldown = 0.5f;        // เวลาระหว่างการยิงแต่ละครั้ง
+    public float fireCooldown = 0.5f;
     private float fireTimer = 0f;
 
     void Update()
     {
         fireTimer += Time.deltaTime;
-
-        // เช็คว่าเรากดปุ่มยิง (คลิกซ้ายหรือ spacebar)
+        
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && fireTimer >= fireCooldown)
         {
             Fire();
@@ -25,10 +24,8 @@ public class TankShooting : MonoBehaviour
 
     void Fire()
     {
-        // สร้างกระสุนที่ตำแหน่ง firePoint
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-
-        // เพิ่มแรงผลักให้กระสุนไปข้างหน้า
+        
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         if (rb != null)
         {
