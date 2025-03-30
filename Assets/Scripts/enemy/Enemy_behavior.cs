@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.Purchasing;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,7 +8,7 @@ public class Enemy_behavior : MonoBehaviour
 {
     public NavMeshAgent enemy;
     public Transform player;
-    public LayerMask ground, target;
+    private LayerMask ground, target;
     
     //for enemy
     public int health;
@@ -27,13 +28,12 @@ public class Enemy_behavior : MonoBehaviour
         enemy = GetComponent<NavMeshAgent>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         //check for sight and attack
         playerInRange = Physics.CheckSphere(transform.position, attackRange, target);
 
-        //chasing();
-        
+        chasing();
         //if player in attackrange = attacking
         if (playerInRange)
         {
@@ -41,7 +41,7 @@ public class Enemy_behavior : MonoBehaviour
         }
     }
 
-    private void chasing()
+    void chasing()
     {
         enemy.SetDestination(player.position);
     }

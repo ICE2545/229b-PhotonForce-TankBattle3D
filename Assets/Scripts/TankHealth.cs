@@ -1,43 +1,78 @@
+/*
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TankHealth : MonoBehaviour
 {
-    public Slider hpSlider;  
-    public int maxHP = 100;
-    private int currentHP;
+    public int maxHealth = 100;
+    private int currentHealth;
 
     void Start()
     {
-        currentHP = maxHP;  
-        hpSlider.maxValue = maxHP;
-        hpSlider.value = currentHP;
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TakeDamage(10); 
-        }
-
-        Debug.Log("Current HP Bar Value: " + hpSlider.value);
+        currentHealth = maxHealth;
     }
 
     public void TakeDamage(int damage)
     {
-        currentHP -= damage;
-        currentHP = Mathf.Clamp(currentHP, 0, maxHP);
-        hpSlider.value = currentHP;
+        currentHealth -= damage;
+        Debug.Log("Get hit Hp remain: " + currentHealth);
 
-        if (currentHP <= 0)
+        if (currentHealth <= 0)
         {
-            Die();  
+            Die();
         }
     }
 
     void Die()
     {
-        Debug.Log("Game Over!");  
+        Debug.Log("Player Game Over!");
+        gameObject.SetActive(false);
+    }
+}
+*/
+
+using UnityEngine;
+using UnityEngine.UI; // ใช้สำหรับ UI
+
+public class TankHealth : MonoBehaviour
+{
+    public int maxHealth = 100000;
+    private int currentHealth;
+
+    public Slider healthBar; // เชื่อมต่อกับ UI
+
+    void Start()
+    {
+        currentHealth = maxHealth;
+        UpdateHealthBar(); // อัปเดตค่า HP Bar ตอนเริ่มเกม
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth < 0) currentHealth = 0;
+
+        UpdateHealthBar(); // อัปเดต HP Bar หลังจากโดนดาเมจ
+
+        Debug.Log("โดนยิง! เลือดเหลือ: " + currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    void UpdateHealthBar()
+    {
+        if (healthBar != null)
+        {
+            healthBar.value = currentHealth / maxHealth; // ปรับค่า Slider ตามเลือดที่เหลือ
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log("Player ตาย!");
+        gameObject.SetActive(false);
     }
 }
