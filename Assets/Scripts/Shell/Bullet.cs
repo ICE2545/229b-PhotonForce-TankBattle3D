@@ -2,21 +2,25 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public int damage = 25; // ดาเมจของกระสุน
+    public int damage = 25;
 
     private void OnTriggerEnter(Collider other)
     {
-        // ถ้ากระสุนชน Player
-        if (other.CompareTag("Player"))
-        {
-            TankHealth playerHealth = other.GetComponent<TankHealth>();
+        Debug.Log("GetHit: " + other.name); 
 
-            if (playerHealth != null)
+        if (other.CompareTag("Tank_4.1"))
+        {
+            Debug.Log("Hit!"); 
+
+            TankHealth tankHealth = other.GetComponent<TankHealth>();
+
+            if (tankHealth != null)
             {
-                playerHealth.TakeDamage(damage);
+                Debug.Log("TakeDamge: " + damage); 
+                tankHealth.TakeDamage(damage);
             }
 
-            Destroy(gameObject); // ทำลายกระสุนเมื่อโดนตัว Player
+            Destroy(gameObject);
         }
     }
 }
