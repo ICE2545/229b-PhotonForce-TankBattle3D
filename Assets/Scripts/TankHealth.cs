@@ -1,16 +1,43 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TankHealth : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public Slider hpSlider;  
+    public int maxHP = 100;
+    private int currentHP;
+
     void Start()
     {
-        
+        currentHP = maxHP;  
+        hpSlider.maxValue = maxHP;
+        hpSlider.value = currentHP;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            TakeDamage(10); 
+        }
+
+        Debug.Log("Current HP Bar Value: " + hpSlider.value);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHP -= damage;
+        currentHP = Mathf.Clamp(currentHP, 0, maxHP);
+        hpSlider.value = currentHP;
+
+        if (currentHP <= 0)
+        {
+            Die();  
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log("Game Over!");  
     }
 }

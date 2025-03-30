@@ -65,6 +65,7 @@ public class Enemy_behavior : MonoBehaviour
             Invoke(nameof(Resetattack), cooldown);
         }
     }
+
     private void Resetattack()
     {
         attack = false;
@@ -80,6 +81,7 @@ public class Enemy_behavior : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
