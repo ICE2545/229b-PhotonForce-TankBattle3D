@@ -1,23 +1,89 @@
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TankHealth : MonoBehaviour
+
 {
     public int maxHealth = 100;
-    private int currentHealth;
-
-    public Slider healthBar;
+    public int currentHealth;
+    public HealthBar healthBar;
+    public GameObject gameOverUI; 
 
     void Start()
     {
         currentHealth = maxHealth;
-        UpdateHealthBar();
+        if (healthBar == null)
+        {
+            healthBar = FindObjectOfType<HealthBar>(); 
+        }
+        healthBar.SetMaxHealth(maxHealth);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            TakeDamage(20);
+        }
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        healthBar.SetHealth(currentHealth);
+        Debug.Log("Get hit! Hp remain: " + currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log("Game Over!");
+        gameOverUI.SetActive(true); 
+        gameObject.SetActive(false); 
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
+    }
+
+}
+
+/*{
+    public int maxHealth = 100;
+    public int currentHealth;
+    public HealthBar healthBar;
+
+    void Start()
+    {
+        currentHealth = maxHealth;
+        UpdateHealthBar();
+        healthBar.SetMaxHealth(maxHealth);
+    }
+
+    void Update()
+    {
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                TakeDamage(20);
+            }
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        healthBar.SetHealth(currentHealth);
         Debug.Log("Get hit! Hp remain: " + currentHealth);
 
         if (currentHealth < 0)
@@ -27,7 +93,8 @@ public class TankHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Die();
+            Debug.Log("Tank Destroyed!");
+            Destroy(gameObject);
         }
     }
 
@@ -35,10 +102,10 @@ public class TankHealth : MonoBehaviour
     {
         if (healthBar != null)
         {
-            healthBar.value = (float)currentHealth / (float)maxHealth; 
+            healthBar.GetComponent<Slider>().value = (float)currentHealth / (float)maxHealth; 
         }
         else
-        {
+        {   
             Debug.LogWarning("HealthBar Disconnected!");
         }
     }
@@ -47,10 +114,11 @@ public class TankHealth : MonoBehaviour
     {
         Debug.Log("Game Over!");
         gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }
 
-/*
+
 using UnityEngine;
 using UnityEngine.UI; 
 
