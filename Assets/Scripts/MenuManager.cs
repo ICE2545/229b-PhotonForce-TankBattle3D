@@ -7,4 +7,9 @@ public class MenuManager : MonoBehaviour
     {
         SceneManager.LoadScene("Credit");
     }
+    
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("SampleScene");
+    }
 }
